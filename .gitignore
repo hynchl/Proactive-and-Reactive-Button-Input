@@ -1,0 +1,13 @@
+.vscode/
+__pycache__/
+.ipynb_checkpoints/
+test_*.py
+*.csv
+*.png
+*.lock
+*.dirlock
+*.hdf5
+*.zip
+*.mp4
+*.bat
+*.sh

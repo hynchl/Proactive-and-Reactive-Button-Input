@@ -1,0 +1,16 @@
+numpy
+scipy
+h5py
+dash
+opencv-python
+matplotlib
+pandas
+parmap
+request
+colormath
+torch
+qpsolvers
+quadprog
+cupy
+pandas
+sklearn
