@@ -29,7 +29,7 @@ If dataset is not available, please email us (byungjoo.lee@yonsei.ac.kr or hyunc
 Conda virtual environment should be available in your computer.
 
 ```
-conda create -n prb # you can replace 'prb' with a name you want.
+conda create -n prb python 3.7 # you can replace 'prb' with a name you want.
 conda activate prb
 pip install -r requirements.txt
 ```

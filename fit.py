@@ -1,6 +1,6 @@
 import sys, argparse, datetime, time, multiprocessing, parmap
 import numpy as np
-from core import em
+from util import em
 from util import data
 from util.util import   align_button_interval, remove_most_frequent_bins, get_mask_interval
 

@@ -1,14 +1,19 @@
 import numpy as np
 import sys, argparse
 
+
+
 # This script is written for prprocessing input logs of keyboard.
 # In our logging system, all the pressed keys are collected as a string at every frame (e.g. 'a/s/d').
 # If you want to analyze a specific button inputs, you should extract specific inputs to analyze and convert it to integer (1 or 0).
 # This script is an example for extracting the button of interest. (e.g. 'a/s/d' == extracting 'a' ==> 1 ) 
 
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--task', required=True, type=str, help='data to be analyze')
+
+
 
 def get_key_down(inputs:np.array):
     '''extract timings when a button gets pressed
@@ -22,6 +27,7 @@ def get_key_down(inputs:np.array):
     return down
 
 
+
 def get_key_up(inputs:np.array):
     '''extract timings when a button gets released
     '''
@@ -33,11 +39,13 @@ def get_key_up(inputs:np.array):
     return up
 
 
+
 def extract_key_pressed(key_inputs:np.array, key:str):
     '''parse string(pressed inputs) to array 
     '''
 
     return np.asarray([(key in key_input.split('/')) for key_input in key_inputs])
+
 
 
 def execute_dino_preprocessing():
@@ -55,6 +63,7 @@ def execute_dino_preprocessing():
         data[:,3] = new_key_inputs
 
         np.savetxt("rawdata/dino/{}_space.csv".format(pid), data, fmt='%s', delimiter=',')
+
 
 
 def execute_tabsonic_preprocessing():
@@ -86,10 +95,12 @@ def execute_tabsonic_preprocessing():
                 np.savetxt('rawdata/{}_{}{}_all.csv'.format(pid, music, sound), data, fmt='%s', delimiter=',')
 
 
+
 def execute_custom_preprocessing():
     '''write your own if needed
     '''
     pass
+
 
 
 if __name__ == "__main__":

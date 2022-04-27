@@ -1,14 +1,11 @@
 import numpy as np
 import cupy as cp
-import colormath
-from colormath import color_constants, spectral_constants
-from colormath.color_objects import LabColor, sRGBColor, LCHabColor, ColorBase, BaseRGBColor
-from colormath.color_conversions import convert_color, _conversion_manager, apply_RGB_matrix
-from colormath.color_objects import ColorBase, XYZColor, sRGBColor, \
-    LCHabColor, LCHuvColor, LabColor, xyYColor, LuvColor, HSVColor, HSLColor, \
-    CMYColor, CMYKColor, BaseRGBColor, IPTColor, SpectralColor, AdobeRGBColor, IlluminantMixin
+from colormath import color_constants
+from colormath.color_objects import LabColor, sRGBColor, ColorBase, BaseRGBColor
+from colormath.color_conversions import convert_color, apply_RGB_matrix
+from colormath.color_objects import ColorBase,  sRGBColor, LabColor, BaseRGBColor, IlluminantMixin
 from colormath.chromatic_adaptation import apply_chromatic_adaptation_on_color
-from colormath.color_diff import delta_e_cie2000, _get_lab_color1_vector, _get_lab_color2_matrix, color_diff_matrix
+from colormath.color_diff import delta_e_cie2000
 import time
 
 cp.cuda.Device(0).use()
@@ -259,7 +256,6 @@ def convert_color_cp(color, target_cs, through_rgb_type=sRGBColor,
 
     return new_color
     
-# noinspection PyPep8Naming,PyUnusedLocal
 def XYZ_to_Lab(cobj, *args, **kwargs):
     """
     Converts XYZ to Lab.
@@ -353,7 +349,6 @@ def RGB_to_XYZ(cobj, target_illuminant=None, *args, **kwargs):
 
     return xyzcolor
 
-# noinspection PyPep8Naming
 def apply_RGB_matrix(var1, var2, var3, rgb_type, convtype="xyz_to_rgb"):
     """
     Applies an RGB working matrix to convert from XYZ to RGB.
