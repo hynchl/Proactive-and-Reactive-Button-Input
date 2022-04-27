@@ -15,6 +15,8 @@ class g():
     PERSISTENCE_THRESHOLD = 0.1
     CHUNK_SIZE = 100
 
+
+
 def get_extrema_mask(data):
     T, H, W = data.shape
     mask = np.full(data.shape, False)
@@ -36,6 +38,8 @@ def get_extrema_mask(data):
     
     return (mask, persistence)
 
+
+
 def _get_extrema_mask(args):
     sequence = args[3]
     extremas = RunPersistence(sequence)
@@ -49,14 +53,13 @@ def _get_extrema_mask(args):
     return mask, threshold
 
 
+
 def rgb_to_lab(rgb):
     original_shape = rgb.shape
     rgb = cp.asarray(rgb)
     rgb = rgb.reshape((-1, 3))
-    # print(rgb.shape)
     srgb = sRGBColor(rgb[:,0], rgb[:,1], rgb[:,2], is_upscaled=True)
     color = convert_color_cp(srgb, LabColor, through_rgb_type=sRGBColor)
     lab = cp.vstack((color.lab_l, color.lab_a, color.lab_b)).T
     result = lab.reshape(original_shape)
-    # print(result.shape)
     return result.get()
