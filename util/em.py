@@ -36,37 +36,22 @@ def get_peak_value(data):
 
 
 def set_starting_values(X, components):
-
-    # initialize weight
-    best_loglikelihood = 0
-    best_components = None
-
-    for step in range(1000):
-        likelihoods = np.zeros((len(X), len(components)))
+    likelihoods = np.zeros((len(X), len(components)))
         
-        for i, c in enumerate(components):
-            # c['theta']  = get_uniform_theta(c)
-            name, pdf, theta = c['name'], c['pdf'], c['theta']
-            if name == 'reactive':
-                peak = get_peak_value(X[X>0])
-                c['theta'] = get_theta_from_peak(c, peak)
-                likelihoods[:,i] = np.asarray(pdf(X, K=theta[0], loc=theta[1], scale=theta[2]))
-            elif name == 'anticipatory':
-                peak = get_peak_value(X[X<0])
-                c['theta'] = get_theta_from_peak(c, peak)
-                likelihoods[:,i] = np.asarray(pdf(X))
-            elif name == 'irrelevant':
-                likelihoods[:,i] = np.asarray(irrelevant_gen(c['data']).pdf(X))
-        
-        llh = np.log(likelihoods)
-        nan_mask = np.isnan(llh)
-
-        loglikelihood = llh[~nan_mask].sum() / 3
-        if loglikelihood > best_loglikelihood:
-            best_loglikelihood = loglikelihood
-            best_components = components.copy()
+    for i, c in enumerate(components):
+        name, pdf, theta = c['name'], c['pdf'], c['theta']
+        if name == 'reactive':
+            peak = get_peak_value(X[X>0])
+            c['theta'] = get_theta_from_peak(c, peak)
+            likelihoods[:,i] = np.asarray(pdf(X, K=theta[0], loc=theta[1], scale=theta[2]))
+        elif name == 'anticipatory':
+            peak = get_peak_value(X[X<0])
+            c['theta'] = get_theta_from_peak(c, peak)
+            likelihoods[:,i] = np.asarray(pdf(X))
+        elif name == 'irrelevant':
+            likelihoods[:,i] = np.asarray(irrelevant_gen(c['data']).pdf(X))
     
-    return best_components
+    return components
 
 
 
