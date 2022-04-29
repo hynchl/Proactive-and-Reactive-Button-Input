@@ -1,6 +1,6 @@
 import time, argparse, time, math
 import numpy as np
-import parmap
+import parmap, multiprocessing
 import util.video as video
 from util.converter import Converter
 from util.util import put
@@ -58,7 +58,7 @@ def extract(T_o, T_i, rgb, output_name):
         db_mask, db_p = get_extrema_mask(dlab[:,:,:,2])
     
         mask = (l_mask | a_mask | b_mask) | (dl_mask | da_mask | db_mask)
-        mask &= (dlab[:,:,:,0]>THRESHOLD) | (dlab[:,:,:,1]>THRESHOLD) | (dlab[:,:,:,2]>THRESHOLD)
+        mask &= (np.abs(dlab[:,:,:,0])>THRESHOLD) | (np.abs(dlab[:,:,:,1])>THRESHOLD) | (np.abs(dlab[:,:,:,2])>THRESHOLD)
     # else:
     #     mask = (dlab[:,:,:,0]>THRESHOLD) | (dlab[:,:,:,1]>THRESHOLD) | (dlab[:,:,:,2]>THRESHOLD)
     
@@ -103,7 +103,7 @@ def get_extrema_mask(data):
             if (sequence.max() - sequence.min()) < 0.001:
                 continue
             arguments.append((T, h, w, sequence))
-    results = parmap.map(_get_extrema_mask, arguments, pm_pbar=True, pm_processes=g.CPU_NUM)
+    results = parmap.map(_get_extrema_mask, arguments, pm_pbar=True, pm_processes=multiprocessing.cpu_count()-1)
     
     for i, result in enumerate(results):
         h, w = arguments[i][1], arguments[i][2]

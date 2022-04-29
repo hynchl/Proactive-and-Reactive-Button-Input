@@ -112,11 +112,6 @@ if __name__ == "__main__":
     da=da[mask_interval]
     db=db[mask_interval]
 
-    mask_dlab = (np.abs(da)>PER_THRESHOLD) | (np.abs(db)>PER_THRESHOLD) | (np.abs(dl)>PER_THRESHOLD)
-    IOI = IOI[mask_dlab]
-    X = X[mask_dlab]
-    Y = Y[mask_dlab]
-
 
 
     # define components of EM

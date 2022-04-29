@@ -1,6 +1,15 @@
 import h5py
 import numpy as np
 
+FOLDER_PATH = "./data"
+FILE_DETAIL = ""
+
+def load(name):
+    ''' Load RT data from the hdf5 file
+    '''
+    path_src = '{}/{}.hdf5'.format(FOLDER_PATH, name, FILE_DETAIL)
+    return h5py.File(path_src, 'r')['data'][:]
+
 def save_output(name, data, name_dset, version=""):
     path_src = "./output/{}_{}.hdf5".format(name, version)
     f = h5py.File(path_src, 'a')
