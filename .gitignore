@@ -11,3 +11,4 @@ test_*.py
 *.mp4
 *.bat
 *.sh
+util/notification.py
