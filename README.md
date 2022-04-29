@@ -13,8 +13,8 @@ This repository contains analysis codes from [our project](...).
 - './S2**_$%.csv' : recorded input. **, $, and % is the particiapnt id, song, and sound condition, respectively.
 
 ### Study 2 Expanding Target Acquisition (N=12) [Download](...)
-- './ET_BEHAVIORAL/S1**S.csv' : behavioral data logged in experiment app. ** is participant id.
-- './ET_BEHAVIROAL/S1**S.json' : condition order presented in the experiments. ** is participant id.
+- './behavioral/S1**S.csv' : behavioral data logged in experiment app. ** is participant id.
+- './behavioral/S1**S.json' : condition order presented in the experiments. ** is participant id.
 - './S1**_$%.mp4' : recorded screen. **, $, and % is the particiapnt id, duration condition, and easing condition, respectively.
 - './S1**_$%.csv' : recorded input. **, $, and % is  the particiapnt id, duration condition, and easing condition, respectively.
 
@@ -27,12 +27,15 @@ If dataset is not available, please email us (byungjoo.lee@yonsei.ac.kr or hyunc
 ## Setting Environment
 
 Conda virtual environment should be available in your computer.
+Also, you need CUDA for installing cupy(CUDA 11.3)
 
 ```
-conda create -n prb python 3.7 # you can replace 'prb' with a name you want.
+conda create -n prb python=3.9 # you can replace 'prb' with a name you want.
 conda activate prb
+conda install cudatookit=11.3
 pip install -r requirements.txt
 ```
+
 
 ## Logging
 If you want to make your own dataset, please refer to [This](https://github.com/hynchl/obs-input-logger). Or, you can download our data.
@@ -42,6 +45,12 @@ We extract input-to-output intervals(IOI) from the recorded and input logs. Inpu
 ```
 conda activate prb
 python preprocess.py --path {file path} --input {'mouse' or 'keyboard'}
+```
+
+```
+
+python key_preprocessing.py --task dino
+python key_preprocessing.py --task tabsonic
 ```
 
 ## Run EM Fitting
