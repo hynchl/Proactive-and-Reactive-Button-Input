@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Quantifying Proactive and Reactive Button Input
-It will be available soon!
-=======
-# Quantifying-Proactive-and-Reactive-Button-Input
 
 This repository contains analysis codes from [our project](https://dl.acm.org/doi/10.1145/3491102.3501913).
 
@@ -83,4 +79,3 @@ The output is the map of weight and parameters. For more detail, please refer to
 
 
 
->>>>>>> develop
