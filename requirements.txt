@@ -1,0 +1,11 @@
+numpy
+scipy
+h5py
+opencv-python
+matplotlib
+pandas
+parmap
+colormath
+cupy-cuda113
+statsmodels
+sklearn
