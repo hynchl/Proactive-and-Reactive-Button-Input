@@ -10,6 +10,7 @@ class Converter():
     len_clicks = 0
 
 
+
     def __init__(self, name, ratio, offset = 0, type='mouse'):
         self.name = name
         self.log = np.genfromtxt(name + '.csv', delimiter=",")[offset:]

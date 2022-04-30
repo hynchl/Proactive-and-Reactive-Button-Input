@@ -7,8 +7,8 @@ from colormath.color_objects import ColorBase,  sRGBColor, LabColor, BaseRGBColo
 from colormath.chromatic_adaptation import apply_chromatic_adaptation_on_color
 from colormath.color_diff import delta_e_cie2000
 import time
-
 cp.cuda.Device(0).use()
+
 
 
 class CColorBase(ColorBase):

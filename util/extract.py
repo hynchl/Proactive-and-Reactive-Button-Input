@@ -3,6 +3,8 @@ import cupy as cp
 from colormath.color_objects import LabColor, sRGBColor
 from util.custom_colormath_cp import convert_color_cp
 
+
+
 def rgb_to_lab(rgb):
     original_shape = rgb.shape
     rgb = cp.asarray(rgb)
