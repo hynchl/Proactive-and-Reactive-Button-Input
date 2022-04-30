@@ -100,7 +100,6 @@ if __name__ == "__main__":
     T_i = merged_data[:, 1] # time of button input
     X = merged_data[:, 3].astype(int) # x position of pixel transition
     Y = merged_data[:, 2].astype(int) # y position of pixel transition
-    dl, da, db =merged_data[:,10], merged_data[:,11], merged_data[:,12] # delta L, delta a, delta b
     IOI = T_i-T 
     del T_i, T
 
@@ -108,9 +107,6 @@ if __name__ == "__main__":
     IOI = IOI[mask_interval]
     X = X[mask_interval]
     Y = Y[mask_interval]
-    dl=dl[mask_interval]
-    da=da[mask_interval]
-    db=db[mask_interval]
 
 
 

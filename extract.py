@@ -5,11 +5,9 @@ import util.video as video
 from util.converter import Converter
 from util.util import put
 from util.extract import rgb_to_lab 
-from util.persistence1d import RunPersistence
 from util.data import Data
 
 THRESHOLD = 5
-PERSISTENCE_THRESHOLD = 0.1
 
 parser = argparse.ArgumentParser(description='Usage Test')
 parser.add_argument('--path', required=True, type=str, help='data to be analyze')
@@ -43,24 +41,7 @@ def extract(T_o, T_i, rgb, output_name):
 
     lab = rgb_to_lab(rgb)
     dlab = lab[1:]-lab[:-1]
-    mask = None
-
-    if True:
-        l_mask, l_p = get_extrema_mask(lab[:,:,:,0])
-        a_mask, a_p = get_extrema_mask(lab[:,:,:,1])
-        b_mask, b_p = get_extrema_mask(lab[:,:,:,2])
-        l_mask, l_p = l_mask[1:], l_p[1:]
-        a_mask, a_p = a_mask[1:], a_p[1:]
-        b_mask, b_p = b_mask[1:], b_p[1:]
-    
-        dl_mask, dl_p = get_extrema_mask(dlab[:,:,:,0])
-        da_mask, da_p = get_extrema_mask(dlab[:,:,:,1])
-        db_mask, db_p = get_extrema_mask(dlab[:,:,:,2])
-    
-        mask = (l_mask | a_mask | b_mask) | (dl_mask | da_mask | db_mask)
-        mask &= (np.abs(dlab[:,:,:,0])>THRESHOLD) | (np.abs(dlab[:,:,:,1])>THRESHOLD) | (np.abs(dlab[:,:,:,2])>THRESHOLD)
-    # else:
-    #     mask = (dlab[:,:,:,0]>THRESHOLD) | (dlab[:,:,:,1]>THRESHOLD) | (dlab[:,:,:,2]>THRESHOLD)
+    mask = (np.abs(dlab[:,:,:,0])>THRESHOLD) | (np.abs(dlab[:,:,:,1])>THRESHOLD) | (np.abs(dlab[:,:,:,2])>THRESHOLD)
     
     indices = np.where(mask)
 
@@ -90,46 +71,6 @@ def extract(T_o, T_i, rgb, output_name):
 
 
 
-def get_extrema_mask(data):
-
-    T, H, W = data.shape
-    mask = np.full(data.shape, False)
-    persistence = np.full(data.shape, 0)
-
-    arguments = []
-    for h in range(H):
-        for w in range(W):
-            sequence = data[:,h,w].reshape(-1)
-            if (sequence.max() - sequence.min()) < 0.001:
-                continue
-            arguments.append((T, h, w, sequence))
-    results = parmap.map(_get_extrema_mask, arguments, pm_pbar=True, pm_processes=multiprocessing.cpu_count()-1)
-    
-    for i, result in enumerate(results):
-        h, w = arguments[i][1], arguments[i][2]
-        mask[:,h,w] = result[0]
-        persistence[:,h,w] = result[1]
-    
-    return (mask, persistence)
-
-
-
-def _get_extrema_mask(args):
-    
-    sequence = args[3]
-    extremas = RunPersistence(sequence)
-    filtered_mask = [int(e[0]) for e in extremas if ((e[1] > PERSISTENCE_THRESHOLD) & ~np.isinf(e[0]))]
-    filtered_threshold = [int(e[1]) if e[1] != np.inf else 0 for e in extremas if ((e[1] > PERSISTENCE_THRESHOLD) & ~np.isinf(e[0]))]
-    
-    mask = np.full(args[0], False)
-    mask[filtered_mask] = True
-    threshold = np.full(args[0], np.nan)
-    threshold[filtered_mask] = np.array(filtered_threshold)
-    
-    return mask, threshold
-
-
-
 if __name__ == "__main__":  
     t0 = time.time()
     args = parser.parse_args()
@@ -140,6 +81,7 @@ if __name__ == "__main__":
     Config.name = args.path
     Config.keys = args.keys.split('/') if Config.device == 'keyboard' else ['']
     Config.chunk_size = args.chunk
+    Config.task = args.task
 
     for k in Config.keys:
 
@@ -195,7 +137,7 @@ if __name__ == "__main__":
                         x_cursor = np.interp(x_cursor, (0, Config.env_width), (0, f.shape[1]))
                         y_cursor = np.interp(y_cursor, (0, Config.env_height), (0, f.shape[0]))
                         h, w, ch = f.shape
-                        f = put(f, x_center - x_cursor, y_center - y_cursor)[h//4:h//4+h, w//4:w//4+w, :]
+                        f = put(f, x_center - x_cursor, y_center - y_cursor)[h//2:h//2+h, w//2:w//2+w, :]
 
                 chunk[chunk_idx] = f
                 chunk_T[chunk_idx] = c.get_input_t(idx)[0]
